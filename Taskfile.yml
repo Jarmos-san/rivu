@@ -1,0 +1,25 @@
+version: "3"
+
+tasks:
+  default:
+    silent: true
+    desc: List all tasks.
+    cmd: task --list
+
+  setup:
+    desc: Setup the dev environment.
+    summary: |
+      Setup the development environment.
+
+      This command is involved in setting up the development environment locally. The
+      command starts by installing all the necessary Pre-Commit hooks followed by
+      installing all the necessary Node.js dependencies.
+    cmds:
+      - task: setup:pre-commit
+
+  setup:pre-commit:
+    internal: true
+    sources: [.pre-commit-config.yaml]
+    generates:
+      - .git/hooks/commit-msg
+      - .git/hooks/pre-commit
