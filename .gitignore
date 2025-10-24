@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,vim,visualstudiocode,web,astro
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,vim,visualstudiocode,web,astro
+# Created by https://www.toptal.com/developers/gitignore/api/node,vim,visualstudiocode,web,astro,taskfile
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,vim,visualstudiocode,web,astro,taskfile
 
 ### Astro ###
 # Gitignore template for Astro projects
@@ -201,4 +201,7 @@ tags
 *.wat
 *.xhtml
 
-# End of https://www.toptal.com/developers/gitignore/api/node,vim,visualstudiocode,web,astro
+### Taskfile ###
+.task
+
+# End of https://www.toptal.com/developers/gitignore/api/node,vim,visualstudiocode,web,astro,taskfile
