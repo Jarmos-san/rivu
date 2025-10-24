@@ -1,0 +1,14 @@
+{
+  "name": "rss",
+  "version": "0.0.1",
+  "description": "A modern and type-safe RSS generator for Node.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Somraj Saha",
+  "license": "MIT",
+  "packageManager": "pnpm@10.19.0",
+  "type": "module"
+}
