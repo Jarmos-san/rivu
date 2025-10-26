@@ -1,5 +1,5 @@
 {
-  "name": "@weburz/rss",
+  "name": "rivu",
   "version": "0.0.1",
   "description": "A modern and type-safe RSS generator for Node.js.",
   "main": "index.js",

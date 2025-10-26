@@ -1,3 +1,3 @@
-# RSS Feed Generator
+# Rivu
 
 A modern and type-safe RSS feed generator for Node.js (written in TypeScript).
