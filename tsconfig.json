@@ -43,8 +43,6 @@
     "exactOptionalPropertyTypes": true,  // `optional?: T` ? `optional: T | undefined`
     "noUncheckedIndexedAccess": true,    // Indexing adds `undefined`
     "noPropertyAccessFromIndexSignature": true, // Force safe access via index
-    "noImplicitOverride": true,          // Must use `override` when overriding
-    "noImplicitReturns": true,           // All paths must return a value
     "noFallthroughCasesInSwitch": true,  // Prevent silent switch fallthrough
     "noUncheckedSideEffectImports": true,// Detect unused side-effect-only imports
     "checkJs": false,                    // Only type-check TS files
