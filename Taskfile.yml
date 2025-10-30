@@ -16,6 +16,12 @@ tasks:
       installing all the necessary Node.js dependencies.
     cmds:
       - task: setup:pre-commit
+      - task: setup:npm
+
+  setup:npm:
+    internal: true
+    sources: [package.json]
+    generates: [pnpm-lock.yaml]
 
   setup:pre-commit:
     internal: true
