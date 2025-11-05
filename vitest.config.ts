@@ -5,5 +5,9 @@ export default defineConfig({
     globals: true,
     environment: "node",
     watch: false,
+    coverage: {
+      enabled: true,
+      provider: "v8",
+    },
   },
 });
