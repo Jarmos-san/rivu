@@ -29,3 +29,14 @@ tasks:
     generates:
       - .git/hooks/commit-msg
       - .git/hooks/pre-commit
+
+  test:
+    silent: true
+    desc: Run the test suite.
+    summary: |
+      Run the test suite.
+
+      This command will run the entire test suite using Vitest. Post completion of the
+      test execution, Vitest will print out a coverage report which can be used as a
+      reference to identify missing test coverage.
+    cmd: pnpm test
