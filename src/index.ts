@@ -1,13 +1,9 @@
-interface FeedOptions {
-  title: string;
-  description: string;
-  siteUrl: string;
-}
+import type { ChannelElements } from "./types.ts";
 
 export class RSS {
-  feedOptions: FeedOptions;
+  feedOptions: ChannelElements;
 
-  constructor(feedOptions: FeedOptions) {
+  constructor(feedOptions: ChannelElements) {
     this.feedOptions = feedOptions;
   }
 }

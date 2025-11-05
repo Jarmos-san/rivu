@@ -4,8 +4,8 @@ import { RSS } from "../src/index";
 describe("src/index.ts", () => {
   const feed = new RSS({
     title: "Lorem Ipsum",
+    link: "https://example.com",
     description: "Lorem Ipsum",
-    siteUrl: "https://example.com",
   });
 
   it("RSS class can be properly instantiated", () => {
@@ -15,6 +15,6 @@ describe("src/index.ts", () => {
   it('RSS class accepts appropriate "feedOptions"', () => {
     expect(feed.feedOptions.title).toBeTypeOf("string");
     expect(feed.feedOptions.description).toBeTypeOf("string");
-    expect(feed.feedOptions.siteUrl).toBeTypeOf("string");
+    expect(feed.feedOptions.link).toBeTypeOf("string");
   });
 });
