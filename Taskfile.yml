@@ -40,3 +40,17 @@ tasks:
       test execution, Vitest will print out a coverage report which can be used as a
       reference to identify missing test coverage.
     cmd: pnpm test
+
+  qa:
+    desc: Run code quality checks.
+    summary: |
+      Run code quality checks.
+
+      This command will run ESLint and Prettier on the source code to enforce a uniform
+      coding standard across the entire source code.
+
+      NOTE: The commands are run sequentially, hence ESLint will ALWAYS run before
+      Prettier.
+    cmds:
+      - pnpm lint
+      - pnpm format
