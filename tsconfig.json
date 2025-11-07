@@ -5,66 +5,66 @@
     "outDir": "./dist",
 
     /* === ECMAScript Target & Module Resolution === */
-    "target": "ES2022",                  // Latest widely supported features
-    "lib": ["ES2022"],                   // Match target
-    "module": "NodeNext",                // Best for Node + modern ESM packages
+    "target": "ES2022", // Latest widely supported features
+    "lib": ["ES2022"], // Match target
+    "module": "NodeNext", // Best for Node + modern ESM packages
     "moduleResolution": "NodeNext",
-    "moduleDetection": "force",          // Enforce explicit module boundaries
+    "moduleDetection": "force", // Enforce explicit module boundaries
     "typeRoots": ["./node_modules/@types"],
     "types": ["node"],
 
     /* === Output & Build === */
-    "declaration": true,                 // Emit .d.ts files
-    "declarationMap": true,              // Map declarations back to sources
-    "sourceMap": true,                   // Enable debugging
-    "noEmitOnError": true,               // Block output if any error
-    "importHelpers": true,               // Reuse helper functions (needs tslib)
+    "declaration": true, // Emit .d.ts files
+    "declarationMap": true, // Map declarations back to sources
+    "sourceMap": true, // Enable debugging
+    "noEmitOnError": true, // Block output if any error
+    "importHelpers": true, // Reuse helper functions (needs tslib)
     "newLine": "lf",
-    "stripInternal": true,               // Remove @internal-marked declarations
-    "preserveSymlinks": false,           // Correct module resolution in linked deps
+    "stripInternal": true, // Remove @internal-marked declarations
+    "preserveSymlinks": false, // Correct module resolution in linked deps
     "incremental": true,
     "tsBuildInfoFile": ".tsbuildinfo",
 
     /* === Interop === */
-    "esModuleInterop": true,             // Enable `import x from "cjs"`
-    "allowSyntheticDefaultImports": true,// Works with default CJS imports
-    "resolveJsonModule": true,           // Allow importing JSON files
-    "verbatimModuleSyntax": true,        // Preserve ESM syntax exactly
+    "esModuleInterop": true, // Enable `import x from "cjs"`
+    "allowSyntheticDefaultImports": true, // Works with default CJS imports
+    "resolveJsonModule": true, // Allow importing JSON files
+    "verbatimModuleSyntax": true, // Preserve ESM syntax exactly
 
     /* === Strict Type Checking === */
-    "strict": true,                      // Enables all strict checks below
-    "noImplicitAny": true,               // Forbid implicit `any`
-    "strictNullChecks": true,            // Require explicit null handling
-    "strictFunctionTypes": true,         // Enforce function variance
-    "strictBindCallApply": true,         // Enforce correct `bind`, `call`, `apply`
-    "strictPropertyInitialization": true,// Require initialized class properties
-    "noImplicitThis": true,              // Disallow untyped `this`
-    "useUnknownInCatchVariables": true,  // Enforce `unknown` in `catch (err)`
-    "exactOptionalPropertyTypes": true,  // `optional?: T` ? `optional: T | undefined`
-    "noUncheckedIndexedAccess": true,    // Indexing adds `undefined`
+    "strict": true, // Enables all strict checks below
+    "noImplicitAny": true, // Forbid implicit `any`
+    "strictNullChecks": true, // Require explicit null handling
+    "strictFunctionTypes": true, // Enforce function variance
+    "strictBindCallApply": true, // Enforce correct `bind`, `call`, `apply`
+    "strictPropertyInitialization": true, // Require initialized class properties
+    "noImplicitThis": true, // Disallow untyped `this`
+    "useUnknownInCatchVariables": true, // Enforce `unknown` in `catch (err)`
+    "exactOptionalPropertyTypes": true, // `optional?: T` ? `optional: T | undefined`
+    "noUncheckedIndexedAccess": true, // Indexing adds `undefined`
     "noPropertyAccessFromIndexSignature": true, // Force safe access via index
-    "noFallthroughCasesInSwitch": true,  // Prevent silent switch fallthrough
-    "noUncheckedSideEffectImports": true,// Detect unused side-effect-only imports
-    "checkJs": false,                    // Only type-check TS files
+    "noFallthroughCasesInSwitch": true, // Prevent silent switch fallthrough
+    "noUncheckedSideEffectImports": true, // Detect unused side-effect-only imports
+    "checkJs": false, // Only type-check TS files
     "strictBuiltinIteratorReturn": true, // Warn if iterators return wrong type
 
     /* === Lint-like Type Rules === */
-    "noUnusedLocals": true,              // Forbid unused variables
-    "noUnusedParameters": true,          // Forbid unused function args
-    "noImplicitReturns": true,           // Require return on all code paths
-    "noImplicitOverride": true,          // Enforce `override` keyword
-    "allowUnreachableCode": false,       // Error on dead code
-    "allowUnusedLabels": false,          // Error on unused labels
+    "noUnusedLocals": true, // Forbid unused variables
+    "noUnusedParameters": true, // Forbid unused function args
+    "noImplicitReturns": true, // Require return on all code paths
+    "noImplicitOverride": true, // Enforce `override` keyword
+    "allowUnreachableCode": false, // Error on dead code
+    "allowUnusedLabels": false, // Error on unused labels
 
     /* === Safety & Stability === */
     "forceConsistentCasingInFileNames": true, // Cross-platform filename safety
-    "skipLibCheck": false,               // Check all dependency types (strict!)
-    "alwaysStrict": true,                // Parse files in strict mode
-    "isolatedModules": true,             // Enforce per-file isolation
+    "skipLibCheck": false, // Check all dependency types (strict!)
+    "alwaysStrict": true, // Parse files in strict mode
+    "isolatedModules": true, // Enforce per-file isolation
 
     /* === Diagnostics / Debug === */
-    "traceResolution": false,            // Set to true if debugging module resolution
-    "explainFiles": false,               // Show included file list
+    "traceResolution": false, // Set to true if debugging module resolution
+    "explainFiles": false, // Show included file list
 
     /* === Hygiene === */
     "removeComments": false,
