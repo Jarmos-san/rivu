@@ -1,22 +1,18 @@
 import tseslint from "typescript-eslint";
+import prettierConfig from "eslint-config-prettier";
 
 export default [
   {
-    files: ["src/**/*.ts"],
+    files: ["**/*.ts"],
     languageOptions: {
       parser: tseslint.parser,
-      parserOptions: {
-        project: true, // Uses your tsconfig.json automatically
-      },
+      parserOptions: { project: true },
     },
     plugins: {
       "@typescript-eslint": tseslint.plugin,
     },
     rules: {
-      // Base recommended rules
       ...tseslint.configs.recommended.rules,
-
-      // Useful project-wide rules
       "@typescript-eslint/consistent-type-imports": [
         "warn",
         { prefer: "type-imports" },
@@ -24,4 +20,7 @@ export default [
       "@typescript-eslint/no-unused-vars": ["warn"],
     },
   },
+
+  // Disable stylistic rules that conflict with Prettier formatting
+  prettierConfig,
 ];
