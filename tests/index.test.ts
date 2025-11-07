@@ -4,19 +4,19 @@ import { ChannelElements } from "../src/types";
 
 describe("src/index.ts", () => {
   it("should initialise with required fields only", () => {
-    const feedOptions: ChannelElements = {
+    const channelElements: ChannelElements = {
       title: "Example Feed",
       link: "https://example.com/rss.xml",
       description: "An example RSS feed",
     };
 
-    const rss = new RSS(feedOptions);
+    const rss = new RSS(channelElements);
 
-    expect(rss.feedOptions).toBe(feedOptions);
+    expect(rss.channelElements).toBe(channelElements);
   });
 
   it("should allow all optional fields", () => {
-    const feedOptions: ChannelElements = {
+    const channelElements: ChannelElements = {
       title: "Extended Feed",
       link: "https://example.com",
       description: "An example RSS feed",
@@ -41,13 +41,13 @@ describe("src/index.ts", () => {
       skipHours: 13,
     };
 
-    const rss = new RSS(feedOptions);
+    const rss = new RSS(channelElements);
 
-    expect(rss.feedOptions).toEqual(feedOptions);
+    expect(rss.channelElements).toBe(channelElements);
   });
 
   it("should accept null values for nullable optional fields", () => {
-    const feedOptions: ChannelElements = {
+    const channelElements: ChannelElements = {
       title: "Nullable Feed",
       link: "https://null.example",
       description: "Feed testing nulls",
@@ -67,8 +67,8 @@ describe("src/index.ts", () => {
       skipDays: null,
     };
 
-    const rss = new RSS(feedOptions);
+    const rss = new RSS(channelElements);
 
-    expect(rss.feedOptions).toEqual(feedOptions);
+    expect(rss.channelElements).toBe(channelElements);
   });
 });
