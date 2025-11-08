@@ -6,7 +6,7 @@
  *
  * @see https://www.rssboard.org/rss-specification#skipDays
  */
-type Days =
+export type Days =
   | "Sunday"
   | "Monday"
   | "Tuesday"
@@ -25,7 +25,7 @@ type Days =
  *
  * @see https://www.rssboard.org/rss-specification#skipHours
  */
-type Hour =
+export type Hour =
   | 0
   | 1
   | 2
