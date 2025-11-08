@@ -72,6 +72,45 @@ interface TextInput {
 }
 
 /**
+ * Represents a single `<item>` element in a RSS feed.
+ *
+ * Each item typically corresponds to a piece of published content, such as a
+ * blog post, article, podcast episode or update. All the fields are optional
+ * but the implementation should at least contain either a title or a
+ * description.
+ */
+interface Item {
+  /** The title of the item, usually the name of the article or a post. */
+  title?: string;
+
+  /** The canonical URL where the full content of the item can be accessed. */
+  link?: string | URL;
+
+  /** A short summary or description of the item. */
+  description?: string;
+
+  /**
+   * The author of the item, typically formatted as `email (Name)` but the
+   * formats can vary.
+   */
+  author?: string;
+
+  /** A category or tag describing the topic of the item. */
+  category?: string;
+
+  /** A link to the comments page or discussion thread related to the item. */
+  comments?: string | URL;
+
+  // enclosure?: string
+  // guid?: string;
+
+  /** The publication date for the item. */
+  pubDate: Date;
+
+  // source?: string | URL
+}
+
+/**
  * Represents the metadata that defines an RSS `<channel>`.
  *
  * This includes required core information (title, link, description), optional
@@ -150,6 +189,13 @@ export interface ChannelElements {
    * no-update days.
    */
   skipDays?: Days | null;
+
+  /**
+   * The collection of published entries associated with the channel. Each
+   * entry is represented by an `<item>` element describing an article, update
+   * or meaningful piece of content.
+   */
+  items: Item[];
 }
 
 /**

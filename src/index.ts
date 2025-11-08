@@ -108,6 +108,23 @@ export class Feed implements RSS {
     add("skipHours", this.channelElements.skipHours);
     add("skipDays", this.channelElements.skipDays);
 
+    if (Array.isArray(this.channelElements.items)) {
+      for (const item of this.channelElements.items) {
+        const itemEl = doc.ele("item");
+
+        if (item.title) itemEl.ele("title").txt(item.title).up();
+        if (item.link) itemEl.ele("link").txt(item.link.toString()).up();
+        if (item.description)
+          itemEl.ele("description").txt(item.description).up();
+        if (item.author) itemEl.ele("author").txt(item.author).up();
+        if (item.category) itemEl.ele("category").txt(item.category).up();
+        if (item.comments)
+          itemEl.ele("comments").txt(item.comments.toString()).up();
+        if (item.pubDate)
+          itemEl.ele("pubDate").txt(item.pubDate.toUTCString()).up();
+      }
+    }
+
     return doc.end({ prettyPrint: true });
   }
 }

@@ -8,6 +8,7 @@ describe("src/feed.ts:Feed", () => {
       title: "Example Feed",
       link: "https://example.com/rss.xml",
       description: "An example RSS feed",
+      items: [],
     };
 
     const feed = new Feed(channelElements);
@@ -31,9 +32,10 @@ describe("src/feed.ts:Feed", () => {
       docs: "https://www.rssboard.org/rss-specification",
       ttl: 60,
       image: "https://example.org/logo.png",
-      textInput: null, // not yet supported in XML
+      textInput: null,
       skipDays: "Sunday",
       skipHours: 13,
+      items: [],
     };
 
     const feed = new Feed(channelElements);
@@ -60,6 +62,7 @@ describe("src/feed.ts:Feed", () => {
       textInput: null,
       skipHours: null,
       skipDays: null,
+      items: [],
     };
 
     const feed = new Feed(channelElements);
@@ -72,6 +75,7 @@ describe("src/feed.ts:Feed", () => {
       title: "My Blog",
       link: "https://example.com",
       description: "Latest updates",
+      items: [],
     });
 
     const xml = feed.generate();
@@ -88,6 +92,7 @@ describe("src/feed.ts:Feed", () => {
       description: "Test",
       language: null,
       generator: undefined,
+      items: [],
     });
 
     const xml = feed.generate();
@@ -103,11 +108,34 @@ describe("src/feed.ts:Feed", () => {
       description: "Desc",
       language: "en",
       generator: "FeedGen",
+      items: [],
     });
 
     const xml = feed.generate();
 
     expect(xml).toContain("<language>en</language>");
     expect(xml).toContain("<generator>FeedGen</generator>");
+  });
+
+  it("should include item elements when items are provided", () => {
+    const feed = new Feed({
+      title: "Feed With Items",
+      link: "https://example.com",
+      description: "Has items",
+      items: [
+        {
+          title: "Item One",
+          link: "https://example.com/1",
+          description: "Test item",
+          pubDate: new Date("2025-01-12"),
+        },
+      ],
+    });
+
+    const xml = feed.generate();
+
+    expect(xml).toContain("<item>");
+    expect(xml).toContain("<title>Item One</title>");
+    expect(xml).toContain("<description>Test item</description>");
   });
 });
