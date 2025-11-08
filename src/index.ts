@@ -18,7 +18,7 @@ export class Feed implements RSS {
    * transformation (if necessary) will be handled externally or in future
    * enhancements.
    */
-  channelElements: ChannelElements;
+  readonly channelElements: ChannelElements;
 
   /**
    * Creates a new `RSS` feed instance with the provided channel metadata.

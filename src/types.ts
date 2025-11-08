@@ -217,7 +217,7 @@ export interface RSS {
    * such as title, link and description along with optional publishing and
    * presentation attributes.
    */
-  channelElements: ChannelElements;
+  readonly channelElements: ChannelElements;
 
   /**
    * Generates the RSS feed as a serialised XML string.
