@@ -8,13 +8,14 @@ export default defineConfig({
     coverage: {
       enabled: true,
       provider: "v8",
+      exclude: ["**/index.ts"],
     },
     silent: "passed-only",
     sequence: {
       concurrent: true,
     },
     typecheck: {
-      enabled: process.env.CI ? true : false,
+      enabled: true,
     },
     bail: process.env.CI ? 3 : undefined,
     retry: process.env.CI ? 3 : 0,
