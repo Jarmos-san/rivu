@@ -67,7 +67,7 @@
     "explainFiles": false, // Show included file list
 
     /* === Hygiene === */
-    "removeComments": false,
+    "removeComments": true,
     "emitDecoratorMetadata": false,
     "experimentalDecorators": false
   },
