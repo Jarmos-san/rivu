@@ -1,5 +1,6 @@
 import { create } from "xmlbuilder2";
 import type { ChannelElements, RSS } from "./types.ts";
+import type { XMLBuilder } from "xmlbuilder2/lib/interfaces.js";
 
 /**
  * Represents an RSS feed generator instance.
@@ -52,6 +53,135 @@ export class Feed implements RSS {
   }
 
   /**
+   * Conditionally appends an XML element to the provided builder.
+   *
+   * This helper method avoids repititive null and undefined checks when
+   * serializing channel or item fields. If the supplied `value` is defined, a
+   * new XML element named `name` is created under `doc` and its text content
+   * is set to the string representation of `value`. If the `value` is
+   * `undefined` or `null`, the method performs no action, ensuring that RSS
+   * fields are omitted entirely from the final output rather than appearing as
+   * empty tags.
+   *
+   * @param doc - The current XML builder node to append the new element to.
+   * @param name - The XML element name, corresponding to a key in
+   * `ChannelElements`.
+   * @param value - The value to serialize into the the element text content.
+   * If `undefined` or `null`, no element will be created.
+   */
+  private build(
+    doc: XMLBuilder,
+    name: keyof ChannelElements,
+    value: unknown,
+  ): void {
+    if (value === undefined || value === null) return;
+    doc.ele(name).txt(String(value)).up();
+  }
+
+  /**
+   * Appends all `<channel>`-level metadata elements to the XML document.
+   *
+   * This method serializes both required and optional RSS channel fields
+   * stored in `channelElements`. Required properties (`title`, `link` and
+   * `description`) are always included while optional fields are only added if
+   * they contain a value preventing empty or placeholder tags from rendering
+   * in the XML output.
+   *
+   * Date-based fields (`pubDate` and `lastBuildDate`) are formatted to the RFC
+   * 1123 standard using {@link formatDate} before serialization as required by
+   * the RSS 2.0 specification.
+   *
+   * Additionally, the optional metadata such as language, editor information,
+   * generator metadata, category details and fetch/skip directives are included
+   * when present. More complex fields (e.g., `image`, `textInput`, etc)
+   * currently require further logic and will be extended in future updates.
+   *
+   * @param document - The XML node representing the `<channel>` element to
+   * which metadata elements shoulld be appended.
+   */
+  private addChannelEl(document: XMLBuilder): void {
+    // Required elements (title, link and description)
+    // The title of the channel
+    this.build(document, "title", this.channelElements.title);
+
+    // The link to the RSS feed
+    this.build(document, "link", this.channelElements.link);
+
+    // The description of the RSS feed itself
+    this.build(document, "description", this.channelElements.description);
+
+    // Optional elements which are added if they were configured
+    // The supported language of the feed (e.g., `"en-US"`, `"en-IN"`)
+    this.build(document, "language", this.channelElements.language);
+
+    // The copyright notice for the document
+    this.build(document, "copyright", this.channelElements.copyright);
+
+    // The editorial manager of the feed
+    this.build(document, "managingEditor", this.channelElements.managingEditor);
+
+    // The technical manager of the feed
+    this.build(document, "webMaster", this.channelElements.webMaster);
+
+    // The publication date of the feed (usually defaults to the last published
+    // item)
+    this.build(
+      document,
+      "pubDate",
+      this.formatDate(this.channelElements.pubDate),
+    );
+
+    // The date when the feed was last generated
+    this.build(
+      document,
+      "lastBuildDate",
+      this.formatDate(this.channelElements.lastBuildDate),
+    );
+
+    // The category or tag of the feed
+    this.build(document, "category", this.channelElements.category);
+
+    // The software used to generate the feed (e.g., "Rivu (Node.js)")
+    this.build(document, "generator", this.channelElements.generator);
+
+    // The documentation (or rather the spec sheet) of RSS 2.0
+    this.build(document, "docs", this.channelElements.docs);
+
+    // The time to live before the feed refreshes
+    this.build(document, "ttl", this.channelElements.ttl);
+
+    // TODO: The following elements require some more logic to be handled. Also
+    // the `textInput` field is missing and needs to be added here
+    this.build(document, "image", this.channelElements.image);
+    this.build(document, "skipHours", this.channelElements.skipHours);
+    this.build(document, "skipDays", this.channelElements.skipDays);
+  }
+
+  /**
+   * Serializes all `<item>` elements within the RSS feed and appends them to
+   * the `<channel>` element.
+   *
+   * If the feed doees not define any items or if `items` is not an array, this
+   * method performs no action. Each item in the list is mapped to its own
+   * `<item>` element under the `<channel>` node.
+   *
+   * @param channel - The `<channel>` XML node into which `<item>` elements
+   * should be inserted.
+   */
+  private addItems(channel: XMLBuilder): void {
+    // Stop execution if no items were passed
+    if (!Array.isArray(this.channelElements.items)) return;
+
+    for (const item of this.channelElements.items) {
+      // Add the `<item>` node to a parent `<channel>` node
+      const itemEl = channel.ele("item");
+
+      // Build the children for the `<item>` node
+      this.build(itemEl, "title", item.title);
+    }
+  }
+
+  /**
    * Generates an RSS 2.0 compliant XML string representation of the feed.
    *
    * This method constructs the `<rss>` and `<channel>` elements and then
@@ -80,73 +210,18 @@ export class Feed implements RSS {
    * ```
    */
   generate(): string {
-    const doc = create({ version: "1.0" })
-      .ele("rss", { version: "2.0" })
-      .ele("channel");
+    // The XML document along with the root node (named `<rss>`)
+    const document = create({ version: "1.0" }).ele("rss", { version: "2.0" });
 
-    /**
-     * Appends an XML element to this RSS `<channel>` only if a value exists.
-     *
-     * This helper prevents conditional boilerplate by ensuring that optional
-     * channel fields (e.g., `language`, `generator`, `pubDate`) are ONLY
-     * included in the final XML output if they're defined. Undefined and null
-     * values are silently ignored.
-     *
-     * @param name - The name of the XML element corresponding to a key in the
-     * {@link ChannelElements} interface.
-     *
-     * @param value - The value to assign to the XML element. If `undefined` or
-     * `null`, no element will be added.
-     */
-    const add = (name: keyof ChannelElements, value: unknown) => {
-      if (value !== undefined && value !== null) {
-        doc.ele(name).txt(String(value)).up();
-      }
-    };
+    // The `<channel>` node which consists of various metadata and item child
+    // elements
+    const channel = document.ele("channel");
 
-    // Required elements
-    add("title", this.channelElements.title);
-    add("link", this.channelElements.link);
-    add("description", this.channelElements.description);
+    // Build the `<channel>` and its child `<item>` nodes
+    this.addChannelEl(channel);
+    this.addItems(channel);
 
-    // Optional elements which are added if they were configured
-    add("language", this.channelElements.language);
-    add("copyright", this.channelElements.copyright);
-    add("managingEditor", this.channelElements.managingEditor);
-    add("webMaster", this.channelElements.webMaster);
-    add("pubDate", this.formatDate(this.channelElements.pubDate));
-    add("lastBuildDate", this.formatDate(this.channelElements.lastBuildDate));
-    add("category", this.channelElements.category);
-    add("generator", this.channelElements.generator);
-    add("docs", this.channelElements.docs);
-    add("ttl", this.channelElements.ttl);
-
-    // TODO: The following elements require some more logic to be handled. Also
-    // the `textInput` field is missing and needs to be added here
-    add("image", this.channelElements.image);
-    add("skipHours", this.channelElements.skipHours);
-    add("skipDays", this.channelElements.skipDays);
-
-    if (Array.isArray(this.channelElements.items)) {
-      for (const item of this.channelElements.items) {
-        const itemEl = doc.ele("item");
-
-        if (item.title) itemEl.ele("title").txt(item.title).up();
-        if (item.link) itemEl.ele("link").txt(item.link.toString()).up();
-        if (item.description)
-          itemEl.ele("description").txt(item.description).up();
-        if (item.author) itemEl.ele("author").txt(item.author).up();
-        if (item.category) itemEl.ele("category").txt(item.category).up();
-        if (item.comments)
-          itemEl.ele("comments").txt(item.comments.toString()).up();
-        if (item.pubDate)
-          itemEl
-            .ele("pubDate")
-            .txt(this.formatDate(item.pubDate) ?? "")
-            .up();
-      }
-    }
-
-    return doc.end({ prettyPrint: true });
+    // Render the XML document tree with nicely indented lines (where necessary)
+    return document.end({ prettyPrint: true });
   }
 }
