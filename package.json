@@ -35,5 +35,8 @@
     "singleQuote": false,
     "printWidth": 80,
     "trailingComma": "all"
+  },
+  "dependencies": {
+    "xmlbuilder2": "^4.0.0"
   }
 }
