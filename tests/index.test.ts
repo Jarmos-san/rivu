@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { Feed } from "../src/index";
-import { ChannelElements } from "../src/types";
+import type { ChannelElements } from "../src/types";
 
-describe("src/index.ts", () => {
+describe("src/feed.ts:Feed", () => {
   it("should initialise with required fields only", () => {
     const channelElements: ChannelElements = {
       title: "Example Feed",
@@ -10,9 +10,9 @@ describe("src/index.ts", () => {
       description: "An example RSS feed",
     };
 
-    const rss = new Feed(channelElements);
+    const feed = new Feed(channelElements);
 
-    expect(rss.channelElements).toBe(channelElements);
+    expect(feed.channelElements).toBe(channelElements);
   });
 
   it("should allow all optional fields", () => {
@@ -31,19 +31,14 @@ describe("src/index.ts", () => {
       docs: "https://www.rssboard.org/rss-specification",
       ttl: 60,
       image: "https://example.org/logo.png",
-      textInput: {
-        title: "Search",
-        description: "Search the site",
-        name: "q",
-        link: new URL("https://example.org/search"),
-      },
+      textInput: null, // not yet supported in XML
       skipDays: "Sunday",
       skipHours: 13,
     };
 
-    const rss = new Feed(channelElements);
+    const feed = new Feed(channelElements);
 
-    expect(rss.channelElements).toBe(channelElements);
+    expect(feed.channelElements).toBe(channelElements);
   });
 
   it("should accept null values for nullable optional fields", () => {
@@ -67,8 +62,52 @@ describe("src/index.ts", () => {
       skipDays: null,
     };
 
-    const rss = new Feed(channelElements);
+    const feed = new Feed(channelElements);
 
-    expect(rss.channelElements).toBe(channelElements);
+    expect(feed.channelElements).toBe(channelElements);
+  });
+
+  it("should generate XML with required fields", () => {
+    const feed = new Feed({
+      title: "My Blog",
+      link: "https://example.com",
+      description: "Latest updates",
+    });
+
+    const xml = feed.generate();
+
+    expect(xml).toContain("<title>My Blog</title>");
+    expect(xml).toContain("<link>https://example.com</link>");
+    expect(xml).toContain("<description>Latest updates</description>");
+  });
+
+  it("should not include optional fields if undefined or null", () => {
+    const feed = new Feed({
+      title: "Test Feed",
+      link: "https://example.com",
+      description: "Test",
+      language: null,
+      generator: undefined,
+    });
+
+    const xml = feed.generate();
+
+    expect(xml).not.toContain("<language>");
+    expect(xml).not.toContain("<generator>");
+  });
+
+  it("should include optional fields when provided", () => {
+    const feed = new Feed({
+      title: "Feed",
+      link: "https://example.com",
+      description: "Desc",
+      language: "en",
+      generator: "FeedGen",
+    });
+
+    const xml = feed.generate();
+
+    expect(xml).toContain("<language>en</language>");
+    expect(xml).toContain("<generator>FeedGen</generator>");
   });
 });

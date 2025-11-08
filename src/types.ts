@@ -172,4 +172,12 @@ export interface RSS {
    * presentation attributes.
    */
   channelElements: ChannelElements;
+
+  /**
+   * Generates the RSS feed as a serialised XML string.
+   *
+   * @returns A serialised RSS 2.0 XML document as a UTF-8 string.
+   *
+   */
+  generate(): string;
 }

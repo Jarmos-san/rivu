@@ -1,3 +1,4 @@
+import { create } from "xmlbuilder2";
 import type { ChannelElements, RSS } from "./types.ts";
 
 /**
@@ -29,5 +30,84 @@ export class Feed implements RSS {
    */
   constructor(channelElements: ChannelElements) {
     this.channelElements = channelElements;
+  }
+
+  /**
+   * Generates an RSS 2.0 compliant XML string representation of the feed.
+   *
+   * This method constructs the `<rss>` and `<channel>` elements and then
+   * populates them using the metadata stored in {@link channelElements}. All
+   * required channel fields (`title`, `link` and `description`) are always
+   * included in the output. Optional fields are only included if values have
+   * been provided by the consumer of this class.
+   *
+   * Internally, the helper function `add()` is used to conditionally add XML
+   * elements and avoid repetitive null/undefined checks. Undefined or null
+   * values are silently skipped, ensuring a clean and standards-compliant RSS
+   * output with no empty tags.
+   *
+   * @returns A formatted RSS feed XML string.
+   *
+   * @example
+   * ```ts
+   * const feed = new Feed({
+   *   title: "My Blog",
+   *   link: "https://example.com",
+   *   description: "Latest updates"
+   * });
+   *
+   * const xml = feed.generate();
+   * console.log(xml);
+   * ```
+   */
+  generate(): string {
+    const doc = create({ version: "1.0" })
+      .ele("rss", { version: "2.0" })
+      .ele("channel");
+
+    /**
+     * Appends an XML element to this RSS `<channel>` only if a value exists.
+     *
+     * This helper prevents conditional boilerplate by ensuring that optional
+     * channel fields (e.g., `language`, `generator`, `pubDate`) are ONLY
+     * included in the final XML output if they're defined. Undefined and null
+     * values are silently ignored.
+     *
+     * @param name - The name of the XML element corresponding to a key in the
+     * {@link ChannelElements} interface.
+     *
+     * @param value - The value to assign to the XML element. If `undefined` or
+     * `null`, no element will be added.
+     */
+    const add = (name: keyof ChannelElements, value: unknown) => {
+      if (value !== undefined && value !== null) {
+        doc.ele(name).txt(String(value)).up();
+      }
+    };
+
+    // Required elements
+    add("title", this.channelElements.title);
+    add("link", this.channelElements.link);
+    add("description", this.channelElements.description);
+
+    // Optional elements which are added if they were configured
+    add("language", this.channelElements.language);
+    add("copyright", this.channelElements.copyright);
+    add("managingEditor", this.channelElements.managingEditor);
+    add("webMaster", this.channelElements.webMaster);
+    add("pubDate", this.channelElements.pubDate?.toUTCString());
+    add("lastBuildDate", this.channelElements.lastBuildDate?.toUTCString());
+    add("category", this.channelElements.category);
+    add("generator", this.channelElements.generator);
+    add("docs", this.channelElements.docs);
+    add("ttl", this.channelElements.ttl);
+
+    // TODO: The following elements require some more logic to be handled. Also
+    // the `textInput` field is missing and needs to be added here
+    add("image", this.channelElements.image);
+    add("skipHours", this.channelElements.skipHours);
+    add("skipDays", this.channelElements.skipDays);
+
+    return doc.end({ prettyPrint: true });
   }
 }
