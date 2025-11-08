@@ -2,6 +2,7 @@ import tseslint from "typescript-eslint";
 import prettierConfig from "eslint-config-prettier";
 
 export default [
+  { ignores: ["coverage/**"] },
   {
     files: ["src/**/*.ts"],
     languageOptions: {
