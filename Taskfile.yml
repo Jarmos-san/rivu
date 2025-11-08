@@ -54,3 +54,29 @@ tasks:
     cmds:
       - pnpm lint
       - pnpm format
+
+  build:
+    desc: Build and compile the package.
+    summary: |
+      Build and compile the package.
+
+      This command will compile and build the package in preparation for distribution to
+      a registry (like npm.js). Although the locally compiled package will NOT be
+      distributed, the purpose of the command is primarily to serve as a sanity check for
+      other devs to check of correctness of the compiled package.
+    cmd: pnpm build
+
+  all:
+    desc: Run the entire development pipeline.
+    summary: |
+      Run the entire developmnet pipeline.
+
+      This command will run the entire development pipeline, from dependency installation
+      to building the package, including running the QA checks on the source code. The
+      command is expected to be run as a means of a sanity check to ensure everything
+      works as expected.
+    cmds:
+      - task: setup
+      - task: qa
+      - task: test
+      - task: build
