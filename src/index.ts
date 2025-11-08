@@ -1,4 +1,4 @@
-import type { ChannelElements } from "./types.ts";
+import type { ChannelElements, RSS } from "./types.ts";
 
 /**
  * Represents an RSS feed generator instance.
@@ -8,7 +8,7 @@ import type { ChannelElements } from "./types.ts";
  * as optional metadata like publication dates, editor information and
  * fetch/skip rules.
  */
-export class RSS {
+export class Feed implements RSS {
   /**
    * The RSS `<channel>` metadata used to describe the feed.
    *

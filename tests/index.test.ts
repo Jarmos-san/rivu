@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RSS } from "../src/index";
+import { Feed } from "../src/index";
 import { ChannelElements } from "../src/types";
 
 describe("src/index.ts", () => {
@@ -10,7 +10,7 @@ describe("src/index.ts", () => {
       description: "An example RSS feed",
     };
 
-    const rss = new RSS(channelElements);
+    const rss = new Feed(channelElements);
 
     expect(rss.channelElements).toBe(channelElements);
   });
@@ -41,7 +41,7 @@ describe("src/index.ts", () => {
       skipHours: 13,
     };
 
-    const rss = new RSS(channelElements);
+    const rss = new Feed(channelElements);
 
     expect(rss.channelElements).toBe(channelElements);
   });
@@ -67,7 +67,7 @@ describe("src/index.ts", () => {
       skipDays: null,
     };
 
-    const rss = new RSS(channelElements);
+    const rss = new Feed(channelElements);
 
     expect(rss.channelElements).toBe(channelElements);
   });

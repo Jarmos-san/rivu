@@ -151,3 +151,25 @@ export interface ChannelElements {
    */
   skipDays?: Days | null;
 }
+
+/**
+ * Represents the structure and data required for constructing an RSS feed.
+ *
+ * This interface defines the core contract for any RSS feed implementation. It
+ * stores the `<channel>` level metadata used when generating an RSS `<channel>`
+ * element which also includes information such as the title, link, description
+ * and optional publishing metadata.
+ *
+ * Implementations of this interface are expected to use `channelElements` as
+ * the source of truth for feed configuration and output formatting.
+ *
+ * @see https://www.rssboard.org/rss-specification#requiredChannelElements
+ */
+export interface RSS {
+  /**
+   * Metadata describing the RSS `<channel>` element inclluding required fields
+   * such as title, link and description along with optional publishing and
+   * presentation attributes.
+   */
+  channelElements: ChannelElements;
+}
