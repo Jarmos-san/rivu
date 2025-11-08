@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Feed } from "../src/index";
-import type { ChannelElements } from "../src/types";
+import { Feed, type ChannelElements } from "../src/index.ts";
 
 describe("src/feed.ts:Feed", () => {
   it("should initialise with required fields only", () => {
