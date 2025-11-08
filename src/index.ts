@@ -33,6 +33,25 @@ export class Feed implements RSS {
   }
 
   /**
+   * Converts a JavaScript `Date` object into a valid RSS-approved date string.
+   *
+   * RSS 2.0 requires the date values to be formatted using the RFC 1123 format
+   * which is achieved via the `Date.prototype.toUTCString()` method. If the
+   * provided value is `undefined` or `null` or is not a `Date` instance, no
+   * output is returned to ensure the optional date fields are ommited in the
+   * rendered XML output.
+   *
+   * @param date - The date value format. Maybe a `Date` object, `null` or
+   * `undefined`.
+   *
+   * @returns A UTC-formatted date string if `date` is a valid `Date` instance,
+   * otherwise it is undefined allowing the caller to skip serialization.
+   */
+  private formatDate(date?: Date | null): string | undefined {
+    return date instanceof Date ? date.toUTCString() : undefined;
+  }
+
+  /**
    * Generates an RSS 2.0 compliant XML string representation of the feed.
    *
    * This method constructs the `<rss>` and `<channel>` elements and then
@@ -95,8 +114,8 @@ export class Feed implements RSS {
     add("copyright", this.channelElements.copyright);
     add("managingEditor", this.channelElements.managingEditor);
     add("webMaster", this.channelElements.webMaster);
-    add("pubDate", this.channelElements.pubDate?.toUTCString());
-    add("lastBuildDate", this.channelElements.lastBuildDate?.toUTCString());
+    add("pubDate", this.formatDate(this.channelElements.pubDate));
+    add("lastBuildDate", this.formatDate(this.channelElements.lastBuildDate));
     add("category", this.channelElements.category);
     add("generator", this.channelElements.generator);
     add("docs", this.channelElements.docs);
@@ -121,7 +140,10 @@ export class Feed implements RSS {
         if (item.comments)
           itemEl.ele("comments").txt(item.comments.toString()).up();
         if (item.pubDate)
-          itemEl.ele("pubDate").txt(item.pubDate.toUTCString()).up();
+          itemEl
+            .ele("pubDate")
+            .txt(this.formatDate(item.pubDate) ?? "")
+            .up();
       }
     }
 
