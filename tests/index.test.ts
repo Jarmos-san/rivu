@@ -125,9 +125,8 @@ describe("src/feed.ts:Feed", () => {
       items: [
         {
           title: "Item One",
-          link: "https://example.com/1",
-          description: "Test item",
-          pubDate: new Date("2025-01-12"),
+          description: "Test item description",
+          pubDate: new Date("2025-10-10"),
         },
       ],
     });
@@ -136,6 +135,6 @@ describe("src/feed.ts:Feed", () => {
 
     expect(xml).toContain("<item>");
     expect(xml).toContain("<title>Item One</title>");
-    expect(xml).toContain("<description>Test item</description>");
+    expect(xml).toContain("<description>Test item description</description>");
   });
 });

@@ -178,6 +178,7 @@ export class Feed implements RSS {
 
       // Build the children for the `<item>` node
       this.build(itemEl, "title", item.title);
+      this.build(itemEl, "description", item.description);
     }
   }
 
