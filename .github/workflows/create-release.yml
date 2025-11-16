@@ -97,3 +97,5 @@ jobs:
           --generate-notes \
           --verify-tag \
           --discussion-category "announcements"
+
+  # TODO: Add another job to publish to the npm package registry
