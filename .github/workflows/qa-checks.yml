@@ -1,6 +1,16 @@
 name: Code QA
 
-on: [push]
+on:
+  push:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - ready_for_review
+      - reopened
+      - review_requested
+    branches-ignore:
+      - dependabot/**
 
 jobs:
   run-eslint:
