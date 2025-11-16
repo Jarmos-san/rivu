@@ -1,7 +1,6 @@
 name: Code QA
 
 on:
-  push:
   pull_request:
     types:
       - synchronize
