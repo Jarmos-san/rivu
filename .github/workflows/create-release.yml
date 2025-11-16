@@ -1,8 +1,8 @@
-name: Create Pre-Release
+name: Create Release
 
 on:
   push:
-    tags: ["v*.*.*-alpha"]
+    tags: ["v*.*.*"]
 
 jobs:
   run-eslint:
@@ -75,7 +75,7 @@ jobs:
         run: pnpm test
 
   create-release:
-    name: Create Pre-Release
+    name: Create Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -87,7 +87,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
 
-      - name: Create Pre-Release
+      - name: Create Release
         env:
           GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           TAG: "${{ github.ref_name }}"
@@ -95,5 +95,5 @@ jobs:
           gh release create "$TAG" \
           --title "$TAG" \
           --generate-notes \
-          --prerelease \
-          --verify-tag
+          --verify-tag \
+          --discussion-category "announcements"
