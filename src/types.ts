@@ -213,13 +213,6 @@ export interface ChannelElements {
  */
 export interface RSS {
   /**
-   * Metadata describing the RSS `<channel>` element inclluding required fields
-   * such as title, link and description along with optional publishing and
-   * presentation attributes.
-   */
-  readonly channelElements: ChannelElements;
-
-  /**
    * Generates the RSS feed as a serialised XML string.
    *
    * @returns A serialised RSS 2.0 XML document as a UTF-8 string.
