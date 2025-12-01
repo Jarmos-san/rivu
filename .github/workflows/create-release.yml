@@ -128,4 +128,4 @@ jobs:
           TAG: "${{ github.ref_name }}"
         run: |
           pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
-          pnpm publish --tag "$TAG" --access public
+          pnpm publish --tag "$TAG" --access public --no-git-checks
