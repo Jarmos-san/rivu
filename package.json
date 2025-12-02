@@ -15,7 +15,14 @@
     "format:check": "prettier . --check",
     "prepublish": "pnpm build"
   },
-  "keywords": [],
+  "keywords": [
+    "rss",
+    "xml",
+    "atom",
+    "feed",
+    "feed builder",
+    "rss feed"
+  ],
   "author": "Somraj Saha",
   "license": "MIT",
   "packageManager": "pnpm@10.20.0",
