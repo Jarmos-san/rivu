@@ -127,5 +127,5 @@ jobs:
           NODE_AUTH_TOKEN: "${{ secrets.NPM_AUTH_TOKEN }}"
         run: |
           pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
-          pnpm config set '//registry.npmjs.org/:always_auth' true
+          pnpm config set '//registry.npmjs.org/:always-auth' true
           pnpm publish --tag "latest" --access public --no-git-checks
