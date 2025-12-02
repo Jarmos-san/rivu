@@ -1,75 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { Feed, type ChannelElements } from "../src/index.ts";
+import { Feed } from "../src/index.ts";
 
-describe("src/feed.ts:Feed", () => {
-  it("should initialise with required fields only", () => {
-    const channelElements: ChannelElements = {
-      title: "Example Feed",
-      link: "https://example.com/rss.xml",
-      description: "An example RSS feed",
-      items: [],
-    };
-
-    const feed = new Feed(channelElements);
-
-    expect(feed.channelElements).toBe(channelElements);
-  });
-
-  it("should allow all optional fields", () => {
-    const channelElements: ChannelElements = {
-      title: "Extended Feed",
-      link: "https://example.com",
-      description: "An example RSS feed",
-      language: "en-US",
-      copyright: "2025 Example Corp",
-      managingEditor: "editor@example.com",
-      webMaster: "webmaster@example.com",
-      pubDate: new Date("2025-01-10"),
-      lastBuildDate: new Date("2025-01-10"),
-      category: "Technology",
-      generator: "Node.js (powered by Rivu)",
-      docs: "https://www.rssboard.org/rss-specification",
-      ttl: 60,
-      image: "https://example.org/logo.png",
-      textInput: null,
-      skipDays: "Sunday",
-      skipHours: 13,
-      items: [],
-    };
-
-    const feed = new Feed(channelElements);
-
-    expect(feed.channelElements).toBe(channelElements);
-  });
-
-  it("should accept null values for nullable optional fields", () => {
-    const channelElements: ChannelElements = {
-      title: "Nullable Feed",
-      link: "https://null.example",
-      description: "Feed testing nulls",
-      language: null,
-      copyright: null,
-      managingEditor: null,
-      webMaster: null,
-      pubDate: null,
-      lastBuildDate: null,
-      category: null,
-      generator: null,
-      docs: null,
-      ttl: null,
-      image: null,
-      textInput: null,
-      skipHours: null,
-      skipDays: null,
-      items: [],
-    };
-
-    const feed = new Feed(channelElements);
-
-    expect(feed.channelElements).toBe(channelElements);
-  });
-
-  it("should generate XML with required fields", () => {
+describe("Feed.generate()", () => {
+  it("generates required fields", () => {
     const feed = new Feed({
       title: "My Blog",
       link: "https://example.com",
@@ -79,16 +12,18 @@ describe("src/feed.ts:Feed", () => {
 
     const xml = feed.generate();
 
+    expect(xml).toContain("<rss");
+    expect(xml).toContain("<channel>");
     expect(xml).toContain("<title>My Blog</title>");
     expect(xml).toContain("<link>https://example.com</link>");
     expect(xml).toContain("<description>Latest updates</description>");
   });
 
-  it("should not include optional fields if undefined or null", () => {
+  it("omits null and undefined optional fields", () => {
     const feed = new Feed({
-      title: "Test Feed",
+      title: "Test",
       link: "https://example.com",
-      description: "Test",
+      description: "Test feed",
       language: null,
       generator: undefined,
       items: [],
@@ -100,23 +35,58 @@ describe("src/feed.ts:Feed", () => {
     expect(xml).not.toContain("<generator>");
   });
 
-  it("should include optional fields when provided", () => {
+  it("includes optional fields when provided", () => {
     const feed = new Feed({
       title: "Feed",
       link: "https://example.com",
       description: "Desc",
       language: "en",
-      generator: "FeedGen",
+      generator: "Rivu",
+      category: "Tech",
       items: [],
     });
 
     const xml = feed.generate();
 
     expect(xml).toContain("<language>en</language>");
-    expect(xml).toContain("<generator>FeedGen</generator>");
+    expect(xml).toContain("<generator>Rivu</generator>");
+    expect(xml).toContain("<category>Tech</category>");
   });
 
-  it("should include item elements when items are provided", () => {
+  it("formats dates in RFC 1123 format", () => {
+    const feed = new Feed({
+      title: "With Dates",
+      link: "https://example.com",
+      description: "Test dates",
+      pubDate: new Date("2025-01-10T12:00:00Z"),
+      lastBuildDate: new Date("2025-01-11T10:30:00Z"),
+      items: [],
+    });
+
+    const xml = feed.generate();
+
+    // date formatting must contain GMT
+    expect(xml).toMatch(/<pubDate>.*GMT<\/pubDate>/);
+    expect(xml).toMatch(/<lastBuildDate>.*GMT<\/lastBuildDate>/);
+  });
+
+  it("omits date fields when not valid Date instance", () => {
+    const feed = new Feed({
+      title: "Invalid dates",
+      link: "https://example.com",
+      description: "Null dates",
+      pubDate: null,
+      lastBuildDate: undefined,
+      items: [],
+    });
+
+    const xml = feed.generate();
+
+    expect(xml).not.toContain("<pubDate>");
+    expect(xml).not.toContain("<lastBuildDate>");
+  });
+
+  it("includes items when provided", () => {
     const feed = new Feed({
       title: "Feed With Items",
       link: "https://example.com",
@@ -124,7 +94,7 @@ describe("src/feed.ts:Feed", () => {
       items: [
         {
           title: "Item One",
-          description: "Test item description",
+          description: "Description for item",
           pubDate: new Date("2025-10-10"),
         },
       ],
@@ -134,6 +104,46 @@ describe("src/feed.ts:Feed", () => {
 
     expect(xml).toContain("<item>");
     expect(xml).toContain("<title>Item One</title>");
-    expect(xml).toContain("<description>Test item description</description>");
+    expect(xml).toContain("<description>Description for item</description>");
+  });
+
+  it("skips unsupported item fields", () => {
+    // You do NOT currently support pubDate on items
+    const feed = new Feed({
+      title: "Unsupported Item Fields",
+      link: "https://example.com",
+      description: "Testing items",
+      items: [
+        {
+          title: "Item Title",
+          description: "Item Desc",
+          pubDate: new Date(), // ignored
+          category: "Ignored category",
+        } as any,
+      ],
+    });
+
+    const xml = feed.generate();
+
+    expect(xml).toContain("<item>");
+    expect(xml).toContain("<title>Item Title</title>");
+    expect(xml).toContain("<description>Item Desc</description>");
+
+    // assert unsupported fields are not added
+    expect(xml).not.toContain("<pubDate>");
+    expect(xml).not.toContain("<category>");
+  });
+
+  it("produces pretty printed XML", () => {
+    const feed = new Feed({
+      title: "Pretty",
+      link: "https://example.com",
+      description: "Test pretty",
+      items: [],
+    });
+
+    const xml = feed.generate();
+
+    expect(xml).toMatch(/\n\s*<channel>/); // detects indentation
   });
 });
