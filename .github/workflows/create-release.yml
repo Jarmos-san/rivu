@@ -122,10 +122,12 @@ jobs:
       - name: Build the Package
         run: pnpm build
 
-      - name: Publish the Package
+      - name: Set the Publishing Config
         env:
-          NODE_AUTH_TOKEN: "${{ secrets.NPM_AUTH_TOKEN }}"
+          NODE_AUTH_TOKEN: "${{ secrets.NODE_AUTH_TOKEN }}"
         run: |
           pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
-          echo "TAG=${{ github.ref_name }}" | tr -d "v" >> $GITHUB_ENV
-          pnpm publish --tag "$TAG" --access public --no-git-checks
+          pnpm config set '//registry.npmjs.org/:always-auth' true
+
+      - name: Publish the Package
+        run: pnpm publish --tag "latest" --access public --no-git-checks
