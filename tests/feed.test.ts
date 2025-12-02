@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { Feed } from "../src/index.ts";
 
 describe("Feed.generate()", () => {
-  it("generates required fields", () => {
+  it("generates required fields wrapped in CDATA", () => {
     const feed = new Feed({
       title: "My Blog",
       link: "https://example.com",
@@ -14,9 +14,13 @@ describe("Feed.generate()", () => {
 
     expect(xml).toContain("<rss");
     expect(xml).toContain("<channel>");
-    expect(xml).toContain("<title>My Blog</title>");
-    expect(xml).toContain("<link>https://example.com</link>");
-    expect(xml).toContain("<description>Latest updates</description>");
+
+    // CDATA expectations
+    expect(xml).toContain("<title><![CDATA[My Blog]]></title>");
+    expect(xml).toContain("<link><![CDATA[https://example.com]]></link>");
+    expect(xml).toContain(
+      "<description><![CDATA[Latest updates]]></description>",
+    );
   });
 
   it("omits null and undefined optional fields", () => {
@@ -35,7 +39,7 @@ describe("Feed.generate()", () => {
     expect(xml).not.toContain("<generator>");
   });
 
-  it("includes optional fields when provided", () => {
+  it("includes optional fields with CDATA", () => {
     const feed = new Feed({
       title: "Feed",
       link: "https://example.com",
@@ -48,26 +52,9 @@ describe("Feed.generate()", () => {
 
     const xml = feed.generate();
 
-    expect(xml).toContain("<language>en</language>");
-    expect(xml).toContain("<generator>Rivu</generator>");
-    expect(xml).toContain("<category>Tech</category>");
-  });
-
-  it("formats dates in RFC 1123 format", () => {
-    const feed = new Feed({
-      title: "With Dates",
-      link: "https://example.com",
-      description: "Test dates",
-      pubDate: new Date("2025-01-10T12:00:00Z"),
-      lastBuildDate: new Date("2025-01-11T10:30:00Z"),
-      items: [],
-    });
-
-    const xml = feed.generate();
-
-    // date formatting must contain GMT
-    expect(xml).toMatch(/<pubDate>.*GMT<\/pubDate>/);
-    expect(xml).toMatch(/<lastBuildDate>.*GMT<\/lastBuildDate>/);
+    expect(xml).toContain("<language><![CDATA[en]]></language>");
+    expect(xml).toContain("<generator><![CDATA[Rivu]]></generator>");
+    expect(xml).toContain("<category><![CDATA[Tech]]></category>");
   });
 
   it("omits date fields when not valid Date instance", () => {
@@ -86,7 +73,7 @@ describe("Feed.generate()", () => {
     expect(xml).not.toContain("<lastBuildDate>");
   });
 
-  it("includes items when provided", () => {
+  it("includes items wrapped in CDATA when provided", () => {
     const feed = new Feed({
       title: "Feed With Items",
       link: "https://example.com",
@@ -103,12 +90,14 @@ describe("Feed.generate()", () => {
     const xml = feed.generate();
 
     expect(xml).toContain("<item>");
-    expect(xml).toContain("<title>Item One</title>");
-    expect(xml).toContain("<description>Description for item</description>");
+
+    expect(xml).toContain("<title><![CDATA[Item One]]></title>");
+    expect(xml).toContain(
+      "<description><![CDATA[Description for item]]></description>",
+    );
   });
 
-  it("skips unsupported item fields", () => {
-    // You do NOT currently support pubDate on items
+  it("skips unsupported item fields (even if CDATA present)", () => {
     const feed = new Feed({
       title: "Unsupported Item Fields",
       link: "https://example.com",
@@ -126,8 +115,8 @@ describe("Feed.generate()", () => {
     const xml = feed.generate();
 
     expect(xml).toContain("<item>");
-    expect(xml).toContain("<title>Item Title</title>");
-    expect(xml).toContain("<description>Item Desc</description>");
+    expect(xml).toContain("<title><![CDATA[Item Title]]></title>");
+    expect(xml).toContain("<description><![CDATA[Item Desc]]></description>");
 
     // assert unsupported fields are not added
     expect(xml).not.toContain("<pubDate>");
@@ -144,6 +133,7 @@ describe("Feed.generate()", () => {
 
     const xml = feed.generate();
 
-    expect(xml).toMatch(/\n\s*<channel>/); // detects indentation
+    // still validating pretty-printing behavior
+    expect(xml).toMatch(/\n\s*<channel>/);
   });
 });

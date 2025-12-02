@@ -75,7 +75,7 @@ export class Feed implements RSS {
     value: unknown,
   ): void {
     if (value === undefined || value === null) return;
-    doc.ele(name).txt(String(value)).up();
+    doc.ele(name).dat(String(value)).up();
   }
 
   /**
