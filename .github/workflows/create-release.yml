@@ -122,10 +122,12 @@ jobs:
       - name: Build the Package
         run: pnpm build
 
-      - name: Publish the Package
+      - name: Set the Publishing Config
         env:
           NODE_AUTH_TOKEN: "${{ secrets.NPM_AUTH_TOKEN }}"
         run: |
           pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
           pnpm config set '//registry.npmjs.org/:always-auth' true
-          pnpm publish --tag "latest" --access public --no-git-checks
+
+      - name: Publish the Package
+        run: pnpm publish --tag "latest" --access public --no-git-checks
