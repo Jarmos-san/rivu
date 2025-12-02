@@ -1,0 +1,22 @@
+name: Feature Request
+description: Request a feature
+title: "[FEATURE REQUEST]: "
+labels: ["enhancement"]
+assignees:
+  - "Jarmos-san"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        "Thanks for contributing to the community project!"
+  - type: textarea
+    id: feature-request
+    attributes:
+      label: Feature details?
+      description: Tell u in detail about the feature you would like to see implemented?
+      placeholder:
+        Explain in detail about the feature you would like to see implemented.
+        Do include code snippets & examples if required!
+      value: "Enhance the capabilities with these features"
+    validations:
+      required: true
