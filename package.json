@@ -1,6 +1,6 @@
 {
   "name": "rivu",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "A modern and type-safe RSS generator for Node.js.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
