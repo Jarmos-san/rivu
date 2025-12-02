@@ -125,7 +125,8 @@ jobs:
       - name: Publish the Package
         env:
           NODE_AUTH_TOKEN: "${{ secrets.NPM_AUTH_TOKEN }}"
-          TAG: "${{ github.ref_name#v }}"
         run: |
           pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
+          TAG="${{ github.ref_name#v }}"
+          echo "TAG=$TAG" >> $GITHUB_ENV
           pnpm publish --tag "$TAG" --access public --no-git-checks
