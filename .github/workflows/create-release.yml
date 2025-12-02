@@ -124,7 +124,7 @@ jobs:
 
       - name: Set the Publishing Config
         env:
-          NODE_AUTH_TOKEN: "${{ secrets.NPM_AUTH_TOKEN }}"
+          NODE_AUTH_TOKEN: "${{ secrets.NODE_AUTH_TOKEN }}"
         run: |
           pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
           pnpm config set '//registry.npmjs.org/:always-auth' true
