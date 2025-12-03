@@ -1,4 +1,4 @@
-name: Code QA
+name: Docs QA
 
 on:
   pull_request:
@@ -11,37 +11,17 @@ on:
     branches-ignore:
       - "dependabot/**"
     paths:
-      - "./src"
-    paths-ignore:
       - "./docs"
+    paths-ignore:
+      - "./src"
 
 jobs:
-  run-eslint:
-    name: Run ESLint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4.1.0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4.4.0
-        with:
-          node-version: 25
-          cache: "pnpm"
-          cache-dependency-path: "./pnpm-lock.yaml"
-
-      - name: Install the Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run ESLint
-        run: pnpm lint
-
   run-prettier:
     name: Run Prettier
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
