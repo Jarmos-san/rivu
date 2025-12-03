@@ -12,8 +12,6 @@ on:
       - "dependabot/**"
     paths:
       - "./docs"
-    paths-ignore:
-      - "./src"
 
 jobs:
   run-prettier:

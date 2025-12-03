@@ -12,8 +12,6 @@ on:
       - "dependabot/**"
     paths:
       - "./src"
-    paths-ignore:
-      - "./docs"
 
 jobs:
   run-eslint:
