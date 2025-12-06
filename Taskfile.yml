@@ -17,6 +17,7 @@ tasks:
     cmds:
       - task: setup:pre-commit
       - task: setup:npm
+      - task: setup:docs
 
   setup:npm:
     internal: true
@@ -29,6 +30,13 @@ tasks:
     generates:
       - .git/hooks/commit-msg
       - .git/hooks/pre-commit
+
+  setup:docs:
+    internal: true
+    dir: ./docs
+    sources: [package.json]
+    generates: [pnpm-lock.yaml]
+    cmd: pnpm install --frozen-lockfile
 
   test:
     silent: true
