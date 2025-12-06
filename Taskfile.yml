@@ -80,3 +80,14 @@ tasks:
       - task: qa
       - task: test
       - task: build
+
+  docs:
+    desc: Run the development version of the documentation.
+    summary: |
+      Run the development version of the documentation.
+
+      This command will run the development version of the documentation. It will change
+      the current working directory to the "docs" and run the necessary command to spin up
+      the development server for the documentation.
+    dir: ./docs
+    cmd: pnpm dev --host
