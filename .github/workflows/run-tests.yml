@@ -8,6 +8,7 @@ on:
       - ready_for_review
       - reopened
       - review_requested
+    paths: ["**/*.ts"]
 
 jobs:
   test-suite:
