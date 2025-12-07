@@ -8,8 +8,7 @@ on:
       - ready_for_review
       - reopened
       - review_requested
-    branches-ignore:
-      - dependabot/**
+    branches-ignore: ["dependabot/**"]
     paths: ["**/*.ts"]
 
 jobs:
