@@ -2,7 +2,7 @@
 title: Get Started
 ---
 
-import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import { Tabs, TabItem, Code, Aside } from "@astrojs/starlight/components";
 
 Welcome to the documentation for the Rivu, a modern RSS 2.0 compliant feed
 generator for Node.js with type-safety. This guide will help you install the
@@ -35,6 +35,84 @@ package manager of your choice, follow these commands:
 With Rivu installed and accessible, you can get started using the package right
 away and generate an RSS XML feed for yourself. The following instructions will
 help you generate the feed as a string output in your terminal.
+
+1. Before you can get started with using Rivu, you will need to create a script
+   which Node.js can execute. Name the script as `feed.ts` and take note of the
+   `.ts` extension which means it is a
+   [TypeScript](https://www.typescriptlang.com) file. It is **RECOMMENDED** to
+   use TypeScript over vanilla JavaScript to gain maximum benefits of the
+   builtin type definitions and an improved developer experience with the
+   package.
+
+2. Add the following contents to the `feed.ts` file:
+
+export const code = `
+const feed = new Feed({
+  title: "Lorem Ipsum",
+  link: "https://jarmos.dev/feed.xml",
+  description: "Lorem ipsum",
+  items: [
+    {
+      title: "lorem ipsum",
+      description: "lorem ipsum",
+      pubDate: new Date("2025-10-10"),
+    },
+  ],
+});
+
+console.log(feed.generate()); `;
+
+<Code code={code} lang="typescript" title="feed.ts" />
+
+3. With the contents added to the `feed.ts` script, you should now execute it
+   with the following command:
+
+   <Code code={`node feed.ts`} lang="console" />
+
+   <Aside type="caution">
+     **NOTE** You will need at least Node.js v22 or above to be able to execute
+     TypeScript files directly! Read the documentation on the topic to learn
+     more - [Running TypeScript
+     Natively](https://nodejs.org/en/learn/typescript/run-natively).
+   </Aside>
+
+4. You should then see the following output on your terminal.
+
+export const feedOutput = `
+<rss version="2.0">
+  <channel>
+    <title><![CDATA[Lorem Ipsum]]></title>
+    <link><![CDATA[https://jarmos.dev/feed.xml]]></link>
+    <description><![CDATA[Lorem ipsum]]></description>
+    <item>
+      <title><![CDATA[lorem ipsum]]></title>
+      <description><![CDATA[lorem ipsum]]></description>
+    </item>
+  </channel>
+</rss>
+`;
+
+<Code code={feedOutput} lang="console" />
+
+As you can see, the output is serialised into a valid XML representation based
+on the JavaScript inputs. Although the quick example above showcased a use case
+to get a serialised output to the `STDOUT`, you can transfer the same ideas to
+let's say generating a XML file.
+
+<Aside type="tip">
+  It is possible to use Rivu to generate dynamic RSS feeds using JavaScript
+  frameworks like [Nuxt.js](https://nuxt.com). My personal website -
+  [jarmos.dev](https://jarmos.dev) has a route
+  ([jarmos.dev/rss.xml](https://jarmos.dev/rss.xml)) which dynamically generates
+  the RSS feed for me on the server. If you use Nuxt.js as well and want to
+  implement a similar functionality then you can check out [the source code of
+  the
+  implementation](https://github.com/Jarmos-san/jarmos.dev/blob/main/website/server/routes/rss.xml.ts)
+  for inspiration.
+</Aside>
+
+Check out the [API Reference](/api-reference) to learn more about customising
+the RSS feed according to your contextual requirements.
 
 ## Contribute to the Project
 
