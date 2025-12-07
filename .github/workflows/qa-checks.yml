@@ -10,6 +10,7 @@ on:
       - review_requested
     branches-ignore:
       - dependabot/**
+    paths: ["**/*.ts"]
 
 jobs:
   run-eslint:
