@@ -2,6 +2,11 @@
   "name": "rivu",
   "version": "0.1.13",
   "description": "A modern and type-safe RSS generator for Node.js.",
+  "homepage": "https://rivu.jarmos.dev",
+  "bugs": {
+    "url": "https://github.com/Jarmos-san/rivu/issues",
+    "email": "contact@jarmos.dev"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -23,7 +28,19 @@
     "feed builder",
     "rss feed"
   ],
-  "author": "Somraj Saha",
+  "author": {
+    "name": "Somraj Saha",
+    "email": "contact@jarmos.dev",
+    "url": "https://jarmos.dev"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/Jarmos-san"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jarmos-san/rivu.git"
+  },
   "license": "MIT",
   "type": "module",
   "devDependencies": {
