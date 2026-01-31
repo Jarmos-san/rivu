@@ -4,25 +4,44 @@ updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: monthly
       time: "06:00"
       timezone: "Asia/Kolkata"
     commit-message:
       prefix: "chore(deps): "
     labels:
       - "dependencies"
+    allow:
+      - dependency-type: production
     groups:
       core:
         patterns: ["*"]
 
   - package-ecosystem: npm
-    directory: ./docs
+    directory: "/"
     schedule:
-      interval: daily
+      interval: monthly
       time: "06:00"
       timezone: Asia/Kolkata
     commit-message:
-      prefix: "chore(docs)"
+      include: scope
+      prefix-development: "chore(dev-deps): "
+    labels:
+      - "dependencies"
+    allow:
+      - dependency-type: development
+    groups:
+      dev:
+        patterns: ["*"]
+
+  - package-ecosystem: npm
+    directory: ./docs
+    schedule:
+      interval: weekly
+      time: "06:00"
+      timezone: Asia/Kolkata
+    commit-message:
+      prefix: "chore(deps-docs)"
     labels:
       - dependencies
       - documentation
