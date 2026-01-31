@@ -1,0 +1,34 @@
+name: Deploy Docs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build the Docs
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6.0.2
+
+      - name: Install and Build the Site
+        uses: withastro/action@v5.1.0
+        with:
+          path: ./docs
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to GitHub Actions
+    needs: build
+    environment:
+      name: Documentation
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4.0.5
