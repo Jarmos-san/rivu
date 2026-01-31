@@ -67,4 +67,4 @@ The package is built using open-source tools and the source code of the package
 itself is also provided publicly accessible under an open-source license.
 Therefore, you are free to copy, modify and/or distribute the package under the
 T&Cs of the MIT license. For more information about the distribution rights in
-the [./LICENSE] document.
+the [LICENSE](./LICENSE) document.
