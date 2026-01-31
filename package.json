@@ -25,7 +25,6 @@
   ],
   "author": "Somraj Saha",
   "license": "MIT",
-  "packageManager": "pnpm@10.20.0",
   "type": "module",
   "devDependencies": {
     "@types/node": "^25.0.0",
@@ -45,5 +44,6 @@
   },
   "dependencies": {
     "xmlbuilder2": "^4.0.0"
-  }
+  },
+  "packageManager": "pnpm@10.28.2"
 }

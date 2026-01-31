@@ -4,6 +4,7 @@ import starlight from "@astrojs/starlight";
 import starlightThemeRapide from "starlight-theme-rapide";
 
 export default defineConfig({
+  site: "https://rivu.jarmos.dev",
   integrations: [
     starlight({
       plugins: [starlightThemeRapide()],
