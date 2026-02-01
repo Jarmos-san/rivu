@@ -1,6 +1,6 @@
 {
   "name": "rivu",
-  "version": "0.1.13",
+  "version": "1.0.0",
   "description": "A modern and type-safe RSS generator for Node.js.",
   "homepage": "https://rivu.jarmos.dev",
   "bugs": {
