@@ -21,7 +21,6 @@ export default defineConfig({
         { label: "API Reference", slug: "api-reference" },
         { label: "Contributing Guidelines", slug: "contributing-guidelines" },
       ],
-      favicon: '/favicon.ico'
     }),
   ],
 });
